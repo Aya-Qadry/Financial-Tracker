@@ -11,14 +11,14 @@ from app.database import SupabaseDB
 def register_user(user_data) : 
     # user _data is obv a dict in order not to put all the columns as args
     db_connection = SupabaseDB()
-    existing_user = db_connection.existing_user(
-        "users",
-        f"'{user_data['email']}'",  # Note the added quotes for string values
-        f"'{user_data['phone_number']}'"
-    )
+    # existing_user = db_connection.existing_user(
+    #     "users",
+    #     f"'{user_data['email']}'",  # Note the added quotes for string values
+    #     f"'{user_data['phone_number']}'"
+    # )
     
-    if existing_user : 
-        raise ValueError("this email already exists")
+    # if existing_user : 
+    #     raise ValueError("this email already exists")
     
     password_hash = User.hash(user_data["password"])
     new_user = User(
@@ -28,14 +28,14 @@ def register_user(user_data) :
         profile_picture=user_data["profile_picture"],
         country=user_data["country"],
         email=user_data["email"],
-        password_hash=password_hash
+        password=password_hash
     )
 
     user_dict = new_user.format_user_to_dict()
     db_response = db_connection.insert("users",user_dict)
 
     if db_response.data :  # return the inserted user
-        return User.format_user_from_dict(db_response.date[0])
+        return User.format_user_from_dict(db_response.data[0])
     else : 
         raise ValueError("Failed to register User")
     
