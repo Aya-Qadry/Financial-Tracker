@@ -3,7 +3,7 @@ from tkinter.ttk import Progressbar
 import sys
 import os
 
-# Initialize the main window
+# Initialize the main windowq
 root = Tk()
 root.resizable(False, False)
 image = PhotoImage(file='assets\\images\\logo.png')
