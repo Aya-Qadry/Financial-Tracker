@@ -1,10 +1,8 @@
-# gui.py
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk  # For resizing icons
-
 
 class GUI:
     def __init__(self, root):
