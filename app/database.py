@@ -31,7 +31,6 @@ class SupabaseDB:
         return self.client.table(table_name).select("*").eq("id", id).execute()
 
     def insert(self, table_name: str, data: Dict[str, Any]):
-        """Insert a new record"""
         return self.client.table(table_name).insert(data).execute()
 
     def insert_many(self, table_name: str, data: list[Dict[str, Any]]):
