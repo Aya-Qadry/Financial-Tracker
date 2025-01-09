@@ -83,6 +83,7 @@ class ReceiptProcessor:
                 print(f"Unexpected error: {str(e)}")
                 return None
 
+    
     def _clean_response(self, text: str) -> str:
         """Clean the response text of any problematic formatting."""
         # Remove markdown code blocks

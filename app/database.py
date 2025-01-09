@@ -23,12 +23,25 @@ class SupabaseDB:
             print("connection couldnt be established with the DB")
 
     def select_all(self, table_name: str):
-        """Get all records from a table"""
         return self.client.table(table_name).select("*").execute()
 
+
     def select_by_id(self, table_name: str, id: int):
-        """Get a record by ID"""
         return self.client.table(table_name).select("*").eq("id", id).execute()
+
+    def get_user_receipts(self, user_id: int):
+        return self.client.table("receipts").select("*").eq("user_id", user_id).execute()
+        # if response.get("status") == 200:
+        #     return response.get("data", [])
+        # else:
+        #     print(f"Error fetching receipts: {response.get('message')}")
+        #     return []
+
+    def get_user_currency(self , user_id: int):
+        user = self.select_by_id("users",user_id)
+        user_data = user.data[0]
+        currency = user_data.get("currency")
+        return currency
 
     def insert(self, table_name: str, data: Dict[str, Any]):
         return self.client.table(table_name).insert(data).execute()
@@ -46,7 +59,6 @@ class SupabaseDB:
         return self.client.table(table_name).delete().eq("id", id).execute()
 
     def filter(self, table_name: str, column: str, value: Any):
-        """Filter records by column value"""
         return self.client.table(table_name).select("*").eq(column, value).execute()
 
     def existing_user(self, table_name: str, email: str, phone_number: str):
@@ -56,7 +68,6 @@ class SupabaseDB:
                 .or_(f"email.eq.{email},phone_number.eq.{phone_number}")\
                 .execute()
             
-            # Convert the response to a list and check if it's empty
             result = list(data)
             print("Debug - Query result:", result)
             return bool(result)
@@ -64,16 +75,9 @@ class SupabaseDB:
             print(f"Debug - Error in query: {str(e)}")
             raise e
     
-    def custom_query(self, table_name: str, query_builder):
-        """
-        Execute a custom query using a query builder function
-        
-        Example:
-        def query_builder(query):
-            return query.select("*").eq("status", "active").order("created_at", desc=True)
-        """
-        base_query = self.client.table(table_name)
-        return query_builder(base_query).execute()
+    # def custom_query(self, table_name: str, query_builder):
+    #     base_query = self.client.table(table_name)
+    #     return query_builder(base_query).execute()
 
 # Example usage
 def main():
@@ -86,23 +90,24 @@ def main():
     # Example operations
     try:
         # Insert a record
-        new_record = {"first_name": "John Doe", "email": "john@example.com"}
-        result = db.insert("User", new_record)
-        print("Inserted:", result)
+        print(db.get_user_receipts(4))
+        # new_record = {"first_name": "John Doe", "email": "john@example.com"}
+        # result = db.insert("User", new_record)
+        # print("Inserted:", result)
         
-        # Select all records
-        all_User = db.select_all("User")
-        print("All User:", all_User)
+        # # Select all records
+        # all_User = db.select_all("User")
+        # print("All User:", all_User)
         
-        # Custom query example
-        def custom_query_builder(query):
-            return query.select("*")\
-                       .eq("status", "active")\
-                       .order("created_at", desc=True)\
-                       .limit(10)
+        # # Custom query example
+        # def custom_query_builder(query):
+        #     return query.select("*")\
+        #                .eq("status", "active")\
+        #                .order("created_at", desc=True)\
+        #                .limit(10)
         
-        active_User = db.custom_query("User", custom_query_builder)
-        print("Active User:", active_User)
+        # active_User = db.custom_query("User", custom_query_builder)
+        # print("Active User:", active_User)
         
     except Exception as e:
         print(f"Error: {e}")

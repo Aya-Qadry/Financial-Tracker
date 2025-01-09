@@ -2,6 +2,7 @@ from customtkinter import *
 from CTkTable import CTkTable
 from PIL import Image
 from utils import ReceiptExtractor
+from visualizations import Insights
 
 app = CTk()
 app.geometry("856x645")
@@ -26,7 +27,22 @@ CTkButton(master=sidebar_frame, image=dashboard_img, text="Dashboard", fg_color=
 transactions_img_data = Image.open("assets/images/package_icon.png")
 transactions_img = CTkImage(dark_image=transactions_img_data, light_image=transactions_img_data)
 
-CTkButton(master=sidebar_frame, image=transactions_img, text="Transactions", fg_color="transparent", font=("Arial Bold", 14), hover_color="#3B82F6", anchor="w").pack(anchor="center", ipady=5, pady=(16, 0))
+main_view = CTkFrame(master=app, fg_color="#F3F4F6", width=680, height=650, corner_radius=0)
+
+def show_insights():
+    Insights(main_view)
+
+add_expenseBtn = CTkButton(
+    master=sidebar_frame, 
+    text="Spending Insights", 
+    font=("Arial Black", 14), 
+    fg_color="transparent",
+    image=transactions_img, 
+    hover_color="#3B82F6", 
+    anchor="w",
+    command=show_insights
+).pack(anchor="center", ipady=5, pady=(16, 0))
+
 
 accounts_img_data = Image.open("assets/images/list_icon.png")
 accounts_img = CTkImage(dark_image=accounts_img_data, light_image=accounts_img_data)
@@ -44,7 +60,6 @@ profile_img_data = Image.open("assets/images/person_icon.png")
 profile_img = CTkImage(dark_image=profile_img_data, light_image=profile_img_data)
 CTkButton(master=sidebar_frame, image=profile_img, text="Profile", fg_color="transparent", font=("Arial Bold", 14), hover_color="#3B82F6", anchor="w").pack(anchor="center", ipady=5, pady=(160, 0))
 
-main_view = CTkFrame(master=app, fg_color="#F3F4F6", width=680, height=650, corner_radius=0)
 main_view.pack_propagate(0)
 main_view.pack(side="left")
 
@@ -52,6 +67,7 @@ title_frame = CTkFrame(master=main_view, fg_color="transparent")
 title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
 CTkLabel(master=title_frame, text="Financial Tracker", font=("Arial Black", 25), text_color="#1E40AF").pack(anchor="nw", side="left")
+
 
 def show_receipt_extractor():
     ReceiptExtractor(main_view)
