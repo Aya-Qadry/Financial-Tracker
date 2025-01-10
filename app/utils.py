@@ -24,7 +24,6 @@ class ReceiptExtractor:
         self.create_widgets()
 
     
-    
     def setup_table(self, user_id: int):
         # Clear any existing table
         if hasattr(self, 'receipt_frame'):

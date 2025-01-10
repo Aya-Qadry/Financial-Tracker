@@ -1,7 +1,7 @@
 from customtkinter import *
 from CTkTable import CTkTable
 from PIL import Image
-from utils import ReceiptExtractor
+# from utils import ReceiptExtractor
 from visualizations import Insights
 
 app = CTk()
@@ -69,8 +69,8 @@ title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 CTkLabel(master=title_frame, text="Financial Tracker", font=("Arial Black", 25), text_color="#1E40AF").pack(anchor="nw", side="left")
 
 
-def show_receipt_extractor():
-    ReceiptExtractor(main_view)
+# def show_receipt_extractor():
+#     ReceiptExtractor(main_view)
 
 add_expenseBtn = CTkButton(
     master=title_frame, 
@@ -79,7 +79,7 @@ add_expenseBtn = CTkButton(
     text_color="#fff", 
     fg_color="#EF4444", 
     hover_color="#B91C1C",
-    command=show_receipt_extractor
+    # command=show_receipt_extractor
 ).pack(anchor="ne", side="right")
 
 
